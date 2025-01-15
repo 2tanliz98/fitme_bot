@@ -21,9 +21,9 @@ const PlanSelector: React.FC = () => {
       <h2>Selecciona un Plan</h2>
       <div className="row">
         {plans.map((plan) => (
-          <div className="col-12 col-sm-4 mb-2" key={plan}>
+          <div className="col-12 col-sm-4 mb-2 plan-buttons" key={plan}>
             <button
-              className="btn btn-success w-100"
+              className="btn"
               onClick={() => handlePlanSelect(plan)}
             >
               {plan}

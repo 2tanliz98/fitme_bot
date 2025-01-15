@@ -4,7 +4,7 @@ import PlanesSeleccion from "./PlanesSeleccion";
 const Home: React.FC = () => {
   return (
     <div>
-      <h1>¡Hola, bienvenido a Fitme 👋!</h1>
+      <h1 className="centered">¡Hola, bienvenido a Fitme 👋!</h1>
       <PlanesSeleccion />
     </div>
   );
