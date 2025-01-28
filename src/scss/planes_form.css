@@ -1,0 +1,197 @@
+.plan-background {
+  background-image: url('../assets/canva_azul.png'); /* Ruta de la imagen */
+  background-size: cover; /* La imagen cubre todo el div */
+  background-position: center; /* Centrar la imagen */
+  background-repeat: no-repeat; /* No repetir la imagen */
+  height: 90vh; /* Asegura que el div ocupe toda la altura de la pantalla */
+  color: white; /* Color de texto blanco para que resalte sobre el fondo */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px; /* Agregar padding si lo necesitas */
+  box-shadow: 0 4px 8px rgba(34, 34, 34, 0.1);
+  width: 100%; /* Asegura que ocupe el ancho total */
+  max-width: 400px; /* Controla el tamaño máximo */
+  margin: 0 auto;
+  border-radius: 8px;
+  overflow-y: auto; /* Desplazamiento permitido si es necesario */
+}
+
+/* Ocultar la barra de desplazamiento */
+.plan-background::-webkit-scrollbar {
+  display: none;
+}
+
+.plan-detail-container {
+  text-align: center;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(34, 34, 34, 0.1);
+  width: 100%; /* Usar todo el ancho posible */
+  max-width: 350px; /* Limitar el ancho máximo */
+  margin: 0 auto;
+  transition: all 0.3s ease;
+}
+
+/* Asegura que el texto sea legible en pantallas pequeñas */
+.plan-background > div > p {
+  color: white;
+  font-size: 16px; /* Tamaño más grande para una mejor visibilidad */
+}
+
+.btnDetalle{
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.btnDetalle:hover{
+    background-color: rgba(0, 0, 0, 1);
+}
+
+
+/* Media Queries para hacer el diseño responsive */
+
+/* Para pantallas pequeñas (móviles) */
+@media (max-width: 600px) {
+  .plan-selector-container {
+    width: 90%; /* Ajusta el contenedor para que ocupe el 90% del ancho */
+  }
+
+  .plan-buttons {
+    flex-direction: column; /* Cambia los botones a una columna en pantallas pequeñas */
+    justify-content: center;
+  }
+
+  .plan-buttons button {
+    width: 100%; /* Los botones ocupan el 100% de ancho */
+    margin-bottom: 10px; /* Espacio entre los botones */
+  }
+}
+
+/* Para pantallas medianas (tabletas) */
+@media (max-width: 900px) {
+  .plan-selector-container {
+    width: 70%; /* Ajusta el contenedor para pantallas medianas */
+  }
+
+  .plan-buttons button {
+    width: 100%; /* Los botones ocupan el 45% de ancho */
+  }
+}
+
+
+
+
+/* Contenedor principal para el carrusel */
+/* Estilos de las tarjetas */
+.card-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+}
+
+/*
+.card {
+    width: 200px; /* Tamaño fijo para las tarjetas 
+    height: 350px; /* Tamaño fijo para las tarjetas 
+    display: grid;
+    align-content: center;
+    justify-content: center;
+}
+
+.card > h2 {
+    margin-left: auto;
+    margin-top: 0;
+}
+
+.card-image{
+    width: 200px;
+}*/
+
+
+/* Estilo para el contenedor de la tarjeta */
+.card {
+  position: relative; /* Necesario para que el botón se posicione sobre la imagen */
+  width: 100%; /* Se adapta al tamaño de su contenedor padre */
+  max-width: 300px; /* Máximo ancho de la tarjeta */
+  margin: 10px; /* Espaciado entre las tarjetas */
+  border-radius: 20px; /* Bordes redondeados */
+  overflow: hidden; /* Oculta cualquier contenido que sobresalga */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para la tarjeta */
+}
+
+/* Estilo para la imagen de la tarjeta */
+.card-image {
+  width: 100%; /* Hace que la imagen ocupe todo el ancho del contenedor */
+  height: auto; /* Mantiene la relación de aspecto */
+  display: block; /* Elimina los márgenes en línea de la imagen */
+}
+
+/* Estilo para el botón */
+.card-button {
+  position: absolute; /* Hace que el botón se posicione sobre la imagen */
+  bottom: 20px; /* Coloca el botón 20px desde el fondo de la imagen */
+  left:50%; /* Centra el botón horizontalmente */
+  transform: translateX(-50%); /* Ajusta la posición para que quede centrado */
+  background-color: transparent; /* Fondo oscuro con transparencia */
+  color: white; /* Texto blanco */
+  border-color: white; /* Sin borde */
+  padding: 10px 20px; /* Espaciado dentro del botón */
+  border-radius: 5px; /* Bordes redondeados */
+  font-size: 16px; /* Tamaño del texto */
+  cursor: pointer; /* Cambia el cursor a mano cuando se pasa por encima */
+  transition: background-color 0.3s ease; /* Transición suave al pasar el cursor */
+}
+
+.card-button:hover {
+  background-color: rgba(0, 0, 0, 0.6); /* Hace el fondo del botón más oscuro al pasar el cursor */
+}
+
+/* Responsividad: Asegura que la tarjeta sea adaptable a diferentes tamaños de pantalla */
+@media (max-width: 768px) {
+  .card {
+    max-width: 100%; 
+  }
+
+  .card-button {
+    bottom: 10px; /* Reduce el espacio entre el botón y la parte inferior en pantallas más pequeñas */
+    font-size: 14px; /* Reduce el tamaño de la fuente del botón */
+    padding: 8px 16px; /* Ajusta el tamaño del padding */
+  }
+
+   .plan-detail-container {
+    width: 90%; /* Ajustamos el ancho para pantallas pequeñas */
+    padding: 15px;
+  }
+
+  .plan-background h2 {
+    font-size: 1.5rem; /* Reducir tamaño del título */
+  }
+
+  .plan-background p {
+    font-size: 3.5vw; /* Reducir tamaño del texto en pantallas pequeñas */
+  }
+}
+
+
+@media (max-width: 480px) {
+  .plan-background {
+    width: 95%; /* Aumenta el ancho para pantallas más pequeñas */
+    height: auto; /* Ajusta la altura */
+    padding: 10px; /* Ajuste del padding */
+  }
+
+  .plan-detail-container {
+    width: 95%; /* Ancho completo en pantallas pequeñas */
+    padding: 10px;
+  }
+
+  .plan-background h2 {
+    font-size: 1.2rem; /* Título aún más pequeño */
+  }
+
+  .plan-background p {
+    font-size: 0.8rem; /* Texto más pequeño */
+  }
+}
