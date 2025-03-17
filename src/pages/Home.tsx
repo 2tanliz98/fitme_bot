@@ -7,7 +7,7 @@ const Home: React.FC = () => {
     <Fragment>
       <section>
         <h1 className="centered">¡Hola, bienvenido a FiTme 👋!</h1>
-        <div className="section-content">
+        <div className="section-content" >
           FiTme es una aplicación de rutinas de ejercicio certificada por
           especialistas, diseñada para gimnasio o casa, enfocada en alto
           rendimiento constante y fortalecimiento físico.
@@ -31,7 +31,9 @@ const Home: React.FC = () => {
         del uso de la misma. poner botón de siguiente para pasar a pantalla de
         datos.
       </section>
+
     </Fragment>
+    
   );
 };
 

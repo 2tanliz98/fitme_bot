@@ -1,0 +1,19 @@
+.circular-container {
+  position: relative;
+  width: 6rem;
+  height: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer-svg {
+  transform: rotate(-90deg);
+}
+
+.timer-text {
+  position: absolute;
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-align: center;
+}

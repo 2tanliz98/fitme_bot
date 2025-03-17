@@ -28,7 +28,7 @@ const Card: React.FC<CardProps> = ({ img, btnText, planName }) => {
           confirmButtonText: "Sí, acepto",
           cancelButtonText: "Cancelar",
           customClass: {
-            popup: "my-content-swal",
+            popup : "my-content-swal",
           },
         }).then((result) => {
           if (result.isConfirmed) {

@@ -14,7 +14,7 @@ const PlanDetalle: React.FC = () => {
   const handleButtonClick = () => {
         Swal.fire({
           title: "Pasos siguientes:",
-          text: ` 1. Realizar tu registro. 2.Aquí van los pasos siguientes`,
+          text: ` 1. Realizar tu registro. 2. ¡Inicia sesión y comienza tu plan!`,
           icon: "success",
           showCancelButton: true,
           confirmButtonText: "Continuar",

@@ -1,0 +1,110 @@
+.home-background {
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.home-background::before {
+  content: "";
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../assets/23_02_9403_Edit_1.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 105vw;
+  height: 100vh;
+  z-index: -1;
+}
+
+
+.grid-container {
+  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, 200px);
+  grid-auto-rows: minmax(200px, auto);
+  gap: 20px;
+}
+
+.grid-item {
+  background-color: rgba(130, 92, 255);
+  padding: 20px;
+  border-radius: 8px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+}
+
+.grid-item:hover{
+    box-shadow:5px 6px 5px 0px rgb(54 54 54 / 87%);
+}
+
+
+@media screen and (max-width: 640px) {
+  .grid-container {
+    max-width: 100%; /* Aseguramos que el contenedor sea flexible */
+    grid-template-columns: repeat(3, 1fr); /* Usamos fracción para que los ítems se ajusten */
+    grid-auto-rows: minmax(150px, 0); /* Ajustamos el tamaño de las filas si es necesario */
+  }
+
+  .grid-item {
+    padding: 10px; /* Reducimos el padding para adaptarse mejor a pantallas pequeñas */
+    font-size: 14px; /* Reducimos el tamaño de la fuente, si es necesario */
+    height: 100px;
+  }
+}
+
+
+.days-title{
+    display: grid;
+}
+
+
+.card-primary {
+    margin-bottom: 2em;
+    padding: 10px;
+    background: linear-gradient(to right, #825CFF, #B0A6DF);
+    border-radius: 15px;
+    width: auto;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow:5px 6px 5px 0px rgb(54 54 54 / 87%);
+    word-wrap: break-word; /* Asegura que el texto largo se ajuste bien */
+   box-sizing: border-box; /* Para incluir padding y border en el tamaño total del contenedor */
+}
+
+.card-primary-transparent {
+    margin-bottom: 2em;
+    padding: 10px;
+    background: linear-gradient(to right, rgba(130, 92, 255, 0.95), rgba(176, 166, 223, 0.8));
+    border-radius: 15px;
+    width: auto;
+    box-shadow: 5px 6px 5px 0px rgb(96 96 96 / 87%);
+    word-wrap: break-word; /* Asegura que el texto largo se ajuste bien */
+   box-sizing: border-box; /* Para incluir padding y border en el tamaño total del contenedor */
+}
+
+
+.modal-button-ok, .modal-button-cancel {
+    margin:10px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+.modal-button-ok:hover {
+   background-color: #646cff;
+}
+.modal-button-cancel:hover{
+     background-color: #8a8a8a;
+}
+.modal-button-ok:focus,
+.modal-button-ok:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
