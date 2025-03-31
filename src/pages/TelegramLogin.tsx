@@ -29,7 +29,7 @@ const TelegramAuth = () => {
 
     // Enviar datos al backend para validación
     const response = await axios.post(
-      "https://localhost:8000/telegram/login",
+      "http://127.0.0.1:8000/telegram/login",
       userData
     );
 
