@@ -8,9 +8,10 @@ import "../scss/planes_form.css";
 import CopiarPortapapeles from "../components/CopiarPortapapeles";
 
 const PlanDetalle: React.FC = () => {
-    const { planName } = useParams<{ planName: string }>(); // Obtenemos el nombre del plan desde la URL
+    const { planName } = useParams<{ planName: string }>(); 
     const navigate = useNavigate();
 
+    // TO DO cambiar mensaje
   const handleButtonClick = () => {
         Swal.fire({
           title: "Pasos siguientes:",

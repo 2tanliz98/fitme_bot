@@ -228,6 +228,7 @@ const HomePage: React.FC = () => {
     setRutinas(rutinasSimuladas);
   }, []);
 
+
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
@@ -252,16 +253,18 @@ const HomePage: React.FC = () => {
   };
   const navigate = useNavigate();
 
-  const handleStartRoutine = () => {
-    // Cuando se haga clic en el botón "Iniciar", pasamos la rutina al componente Routine.
-    if (selectedRutina) {
-      console.log("Iniciando rutina:", selectedRutina);
-      // Redirigir a la página de rutina con la rutina seleccionada como 'state'
-      navigate("/rutina", { state: { rutina: selectedRutina } });
-    } else {
-      console.log("No hay rutina seleccionada.");
-    }
-  };
+const handleStartRoutine = () => {
+  if (selectedRutina) {
+    console.log("Iniciando rutina:", selectedRutina);
+    sessionStorage.setItem(
+      "rutinaSeleccionada",
+      JSON.stringify(selectedRutina)
+    ); // 💾
+    navigate("/rutina",{state: { rutina: selectedRutina }});
+  } else {
+    console.log("No hay rutina seleccionada.");
+  }
+};
 
   return (
     <section className="home-background">

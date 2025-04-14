@@ -7,40 +7,34 @@ import {
   isToday,
   eachDayOfInterval,
 } from "date-fns";
-import { es } from "date-fns/locale"; // Importar locale en español
+import { es } from "date-fns/locale";
 
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { BottomNavigationAction } from "@mui/material";
 
 const Calendario: React.FC = () => {
-  // Fecha actual
-  const today = new Date();
+  const hoy = new Date();
 
-  // Estado para la semana actual (usaremos el inicio de la semana como punto de referencia)
-    const [currentWeek, setCurrentWeek] = useState<Date>(() =>
-      startOfWeek(today, { weekStartsOn: 0 })
-    );
+  const [semanaActual, setSemanaActual] = useState<Date>(() =>
+    startOfWeek(hoy, { weekStartsOn: 0 })
+  );
 
-
-  // Función para obtener los días de la semana
-  const getWeekDays = (startOfWeekDate: Date) => {
+  const obtenerDiasDeLaSemana = (inicioDeSemana: Date) => {
     return eachDayOfInterval({
-      start: startOfWeekDate,
-      end: addWeeks(startOfWeekDate, 1),
+      start: inicioDeSemana,
+      end: addWeeks(inicioDeSemana, 1),
     }).slice(0, 7);
   };
 
-  // Obtener los días de la semana actual
-  const weekDays = getWeekDays(currentWeek);
+  const diasDeLaSemana = obtenerDiasDeLaSemana(semanaActual);
 
-  // Cambiar entre semanas
-  const goToNextWeek = () => {
-    setCurrentWeek((prev) => addWeeks(prev, 1));
+  const irASiguienteSemana = () => {
+    setSemanaActual((anterior) => addWeeks(anterior, 1));
   };
 
-  const goToPreviousWeek = () => {
-    setCurrentWeek((prev) => subWeeks(prev, 1));
+  const irASemanaAnterior = () => {
+    setSemanaActual((anterior) => subWeeks(anterior, 1));
   };
 
   return (
@@ -53,54 +47,53 @@ const Calendario: React.FC = () => {
         }}
       >
         <BottomNavigationAction
-          onClick={goToPreviousWeek}
+          onClick={irASemanaAnterior}
           style={{ marginRight: "10px" }}
           icon={<KeyboardArrowLeftIcon />}
-        ></BottomNavigationAction>
-        <h4>{format(currentWeek, "MMMM yyyy", { locale: es })} </h4>
+        />
+        <h4>{format(semanaActual, "MMMM yyyy", { locale: es })} </h4>
         <BottomNavigationAction
-          onClick={goToNextWeek}
+          onClick={irASiguienteSemana}
           style={{ marginLeft: "10px" }}
           icon={<KeyboardArrowRightIcon />}
-        ></BottomNavigationAction>
+        />
       </div>
+
       <div style={{ display: "flex", justifyContent: "space-around" }}>
-        {weekDays.map((day) => (
+        {diasDeLaSemana.map((dia) => (
           <div
-            key={day.toString()}
+            key={dia.toString()}
             style={{
               textAlign: "center",
               cursor: "pointer",
             }}
           >
-            {/* Mostrar la inicial del día de la semana */}
+            {/* Inicial del día de la semana */}
             <div
               style={{
-                fontSize: "14px", // Tamaño de la inicial
-                fontWeight: "bold", // Negrita para la inicial
+                fontSize: "14px",
+                fontWeight: "bold",
                 color: "black",
               }}
             >
-              {format(day, "iii", { locale: es }).charAt(0).toUpperCase()}{" "}
-              {/* Primer letra del día */}
+              {format(dia, "iii", { locale: es }).charAt(0).toUpperCase()}
             </div>
-            {/* Mostrar el número del día */}
 
+            {/* Número del día */}
             <div
-              key={day.toString()}
               style={{
                 padding: "10px",
                 textAlign: "center",
                 width: "40px",
-                backgroundColor: isToday(day)
+                backgroundColor: isToday(dia)
                   ? "rgba(130, 92, 255)"
                   : "transparent",
-                color: isToday(day) ? "white" : "black",
+                color: isToday(dia) ? "white" : "black",
                 borderRadius: "50%",
                 cursor: "pointer",
               }}
             >
-              {format(day, "d", { locale: es })}
+              {format(dia, "d", { locale: es })}
             </div>
           </div>
         ))}

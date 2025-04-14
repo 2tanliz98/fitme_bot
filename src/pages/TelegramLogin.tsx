@@ -27,14 +27,13 @@ const TelegramAuth = () => {
       return;
     }
 
-    // Enviar datos al backend para validación
     const response = await axios.post(
       "http://127.0.0.1:8000/telegram/login",
       userData
     );
 
     if (response.data.status === "success") {
-      setUser(response.data.user); // Guardamos los datos del usuario
+      setUser(response.data.user); 
       alert("Autenticación exitosa");
     } else {
       alert("Error de autenticación");
@@ -49,7 +48,6 @@ const TelegramAuth = () => {
       {user && (
         <div>
           <h3>Bienvenido, {user.first_name}</h3>
-          {/* Muestra más detalles del usuario */}
         </div>
       )}
     </div>

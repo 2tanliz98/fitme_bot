@@ -12,6 +12,12 @@ import planB from "../assets/PLAN B.png";
 import planC from "../assets/PLAN C.png";
 import planCC from "../assets/PLAN CC.png";
 
+const planesImg = [
+  { 'img': planA, 'nombre':  'PLAN A' },
+  { 'img': planB, 'nombre':  'PLAN B' },
+  { 'img': planC, 'nombre':  'PLAN C' },
+  { 'img': planCC, 'nombre': 'PLAN C+'},
+];
 
 const PlanesSeleccion: React.FC = () => {
  
@@ -23,29 +29,31 @@ const PlanesSeleccion: React.FC = () => {
       </h2>
       <div className="card-container">
         <Swiper
-          observer={true} // Permite que Swiper observe los cambios en el DOM
-          observeParents={true} // Asegura que los cambios en los padres también sean observados
+          observer={true}
+          observeParents={true}
           spaceBetween={10}
           slidesPerView={1}
           loop={false}
           autoplay={{ delay: 3000 }}
           pagination={{ clickable: true }}
           navigation={{
-            // Configuración de navegación
-            nextEl: ".swiper-button-next", // Botón para ir al siguiente slide
-            prevEl: ".swiper-button-prev", // Botón para ir al slide anterior
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
           }}
-          modules={[Navigation, Pagination]} // Asegúrate de que el módulo de navegación esté habilitado
+          modules={[Navigation, Pagination]}
           breakpoints={{
             640: { slidesPerView: 1 },
             768: { slidesPerView: 2 },
             1024: { slidesPerView: 4 },
           }}
         >
-          <SwiperSlide>
-            <Card img={planA} btnText="Seleccionar" planName="PLAN A" />
-          </SwiperSlide>
-          <SwiperSlide>
+          {planesImg.map((plan) => (
+            <SwiperSlide>
+              <Card img={plan.img} btnText="Seleccionar" planName={plan.nombre} />
+            </SwiperSlide>
+          ))}
+
+          {/* <SwiperSlide>
             <Card img={planB} btnText="Seleccionar" planName="PLAN B" />
           </SwiperSlide>
           <SwiperSlide>
@@ -53,7 +61,7 @@ const PlanesSeleccion: React.FC = () => {
           </SwiperSlide>
           <SwiperSlide>
             <Card img={planCC} btnText="Seleccionar" planName="PLAN C+" />
-          </SwiperSlide>
+          </SwiperSlide> */}
         </Swiper>
       </div>
     </section>

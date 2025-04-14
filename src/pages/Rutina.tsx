@@ -1,128 +1,213 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useState, useEffect, useCallback } from "react";
 import { Ejercicio } from "../types";
 import { useLocation, useNavigate } from "react-router-dom";
+import CircularProgress from "../components/CircularProgress__temp";
+import "../scss/timer.css";
 
 interface Rutina {
   dia: string;
   ejercicios: Ejercicio[];
 }
 
-const Routine: React.FC = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
+const RutinaComponent: React.FC = () => {
+  const ubicacion = useLocation();
+  const navegar = useNavigate();
 
-  const { rutina }: { rutina: Rutina } = location.state || {
+  const [mostrarTemporizador, setMostrarTemporizador] = useState(false);
+  const [enTransicion, setEnTransicion] = useState(false);
+  const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
+
+  const { rutina }: { rutina: Rutina } = ubicacion.state || {
     rutina: { dia: "", ejercicios: [] },
   };
 
-  // Recuperar el estado de la rutina desde sessionStorage
-  const storedState = sessionStorage.getItem("rutinaState");
-  console.log(storedState);
-  const [currentExerciseIndex, setCurrentExerciseIndex] = useState(
-    storedState ? JSON.parse(storedState).currentExerciseIndex : 0
-  );
-  const [currentSet, setCurrentSet] = useState(
-    storedState ? JSON.parse(storedState).currentSet : 0
-  );
+  const rutinaGuardada = sessionStorage.getItem("rutinaSeleccionada");
+  let estadoInicial = { indiceEjercicioActual: 0, setActual: 0 };
 
-  const currentExercise = rutina.ejercicios[currentExerciseIndex];
-  const repetitionsForCurrentSet = currentExercise.repeticiones[currentSet];
+  if (rutinaGuardada) {
+    try {
+      const datosParseados = JSON.parse(rutinaGuardada);
+      if (
+        typeof datosParseados.indiceEjercicioActual === "number" &&
+        typeof datosParseados.setActual === "number"
+      ) {
+        estadoInicial = datosParseados;
+      }
+    } catch (e) {
+      console.warn("Error al parsear rutinaSeleccionada", e);
+    }
+  }
+
+  const [indiceEjercicioActual, setIndiceEjercicioActual] = useState(
+    estadoInicial.indiceEjercicioActual
+  );
+  const [setActual, setSetActual] = useState(estadoInicial.setActual);
+
+  const ejercicioActual = rutina.ejercicios[indiceEjercicioActual];
+  const repeticionesActual =
+    ejercicioActual?.repeticiones?.[
+      Math.min(setActual, ejercicioActual?.repeticiones?.length - 1)
+    ] ?? 0;
 
   useEffect(() => {
-    // Si el estado ha sido actualizado, guarda el nuevo estado en sessionStorage
     sessionStorage.setItem(
-      "rutinaState",
+      "rutinaSeleccionada",
       JSON.stringify({
         rutina,
-        currentExerciseIndex,
-        currentSet,
+        indiceEjercicioActual,
+        setActual,
       })
     );
-  }, [currentExerciseIndex, currentSet, rutina]);
+  }, [indiceEjercicioActual, setActual, rutina]);
 
-  const handleNextExercise = () => {
-    const currentExercise = rutina.ejercicios[currentExerciseIndex];
+  const alTerminarTemporizador = useCallback(() => {
+    if (enTransicion) return;
 
-    console.log("Current set: ", currentSet);
-    console.log("currentExercise set: ", currentExercise.sets - 1);
-    console.log("currentExerciseIndex: ", currentExerciseIndex);
-    // Si hemos completado todos los sets de un ejercicio, pasamos al siguiente ejercicio
-    if (currentSet >= currentExercise.sets - 1) {
-      // Primero, actualizamos el estado local
-      setCurrentExerciseIndex(currentExerciseIndex + 1);
-      setCurrentSet(0); // Reiniciar los sets para el siguiente ejercicio
+    setEnTransicion(true);
+    setMostrarTemporizador(false);
 
-      // Guardar el estado actualizado en sessionStorage
-      sessionStorage.setItem(
-        "rutinaState",
-        JSON.stringify({
-          rutina,
-          currentExerciseIndex: currentExerciseIndex + 1,
-          currentSet: 0,
-        })
-      );
+    setSetActual((prevSet) => {
+      const siguienteSet = prevSet + 1;
+      console.log(`Actualizando set de ${prevSet} a ${siguienteSet}`);
 
-      console.log("rutina.ejercicios.length: ", rutina.ejercicios.length);
-      console.log("pasamos al siguiente ejercicio desde routine");
+      if (siguienteSet >= ejercicioActual.sets) {
+        setIndiceEjercicioActual((prevIndice) => {
+          const siguienteIndice = prevIndice + 1;
 
-      // Verificar si hay más ejercicios
-      if (currentExerciseIndex < rutina.ejercicios.length - 1) {
-        console.log("pasamos al siguiente ejercicio");
-      } else {
-        alert("¡Rutina completada!");
-        navigate("/home"); // Redirigir al inicio si ya no hay más ejercicios
+          if (siguienteIndice >= rutina.ejercicios.length) {
+            alert("¡Rutina completada!");
+            sessionStorage.removeItem("rutinaSeleccionada");
+            navegar("/home");
+            return prevIndice;
+          }
+
+          return siguienteIndice;
+        });
+
+        setEnTransicion(false);
+        return 0;
       }
-    } else {
-      console.log("pasamos al siguiente set desde routine");
-      setCurrentSet(currentSet + 1); // Pasar al siguiente set
 
-      // Guardar el estado actualizado en sessionStorage
-      sessionStorage.setItem(
-        "rutinaState",
-        JSON.stringify({
-          rutina,
-          currentExerciseIndex,
-          currentSet: currentSet + 1,
-        })
-      );
-    }
-
-    // Iniciar el descanso después de cada set
-    const nextRestTime = currentExercise.descanso;
-    navigate("/cronometro", {
-      state: {
-        restTime: nextRestTime, // Tiempo de descanso
-        currentExerciseIndex,
-        currentSet: currentSet + 1, // Avanzar el set antes de ir al cronómetro
-        rutina,
-      },
+      setEnTransicion(false);
+      return siguienteSet;
     });
+  }, [ejercicioActual?.sets, rutina.ejercicios.length, navegar, enTransicion]);
+
+  const manejarSiguiente = () => {
+    if (!ejercicioActual || mostrarTemporizador) return;
+    setMostrarTemporizador(true);
   };
+
+  const convertirEnlaceEmbed = (url: string): string => {
+    if (!url) return "";
+    const videoIdMatch = url.match(
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/
+    );
+    const videoId = videoIdMatch?.[1];
+    return videoId ? `https://www.youtube.com/embed/${videoId}` : "";
+  };
+
+  if (!ejercicioActual) {
+    return <div>No se encontró el ejercicio actual.</div>;
+  }
 
   return (
     <div>
       <h1>Rutina de Ejercicio</h1>
-      <h2>Ejercicio: {currentExercise.nombre}</h2>
-      <p>Material: {currentExercise.material}</p>
-      <p>Repeticiones para este set: {repetitionsForCurrentSet}</p>
+      <h2>
+        Ejercicio: {ejercicioActual.nombre} ({indiceEjercicioActual + 1} de{" "}
+        {rutina.ejercicios.length})
+      </h2>
+
       <p>
-        Enlace de YouTube:{" "}
-        <a
-          href={currentExercise.enlaceYoutube}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Ver ejercicio
-        </a>
+        {setActual + 1} de {ejercicioActual.sets} —{" "}
+        {setActual < ejercicioActual.sets - 1
+          ? "Siguiente set"
+          : "Descansa antes del siguiente ejercicio"}
       </p>
 
-      <button onClick={handleNextExercise}>
-        {currentSet < currentExercise.sets - 1
+      <p>Repeticiones para este set: {repeticionesActual}</p>
+
+      <div style={{ margin: "1rem 0" }}>
+        <p>Video explicativo:</p>
+        <div
+          style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}
+        >
+          <iframe
+            src={convertirEnlaceEmbed(ejercicioActual.enlaceYoutube)}
+            title="Video de ejercicio"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+            }}
+          ></iframe>
+        </div>
+      </div>
+
+      <button
+        onClick={manejarSiguiente}
+        disabled={mostrarTemporizador || enTransicion}
+      >
+        {setActual < ejercicioActual.sets - 1
           ? "Siguiente set"
-          : "Finalizar ejercicio"}
+          : indiceEjercicioActual < rutina.ejercicios.length - 1
+          ? "Siguiente ejercicio"
+          : "Finalizar rutina"}
       </button>
+
+      <button
+        onClick={() => setMostrarConfirmacion(true)}
+        disabled={enTransicion}
+        style={{ marginLeft: "1rem" }}
+      >
+        Detener rutina
+      </button>
+
+      {mostrarTemporizador && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <CircularProgress
+              key={`${indiceEjercicioActual}-${setActual}`}
+              restTime={ejercicioActual.descanso}
+              currentSet={setActual}
+              currentExerciseIndex={indiceEjercicioActual}
+              rutina={rutina}
+              onFinish={alTerminarTemporizador}
+            />
+          </div>
+        </div>
+      )}
+
+      {mostrarConfirmacion && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <p>¿Quieres detener la rutina?</p>
+            <div style={{ marginTop: "1rem" }}>
+              <button
+                onClick={() => {
+                  sessionStorage.removeItem("rutinaSeleccionada");
+                  navegar("/home");
+                }}
+                style={{ marginRight: "1rem" }}
+              >
+                Salir
+              </button>
+              <button onClick={() => setMostrarConfirmacion(false)}>
+                Continuar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-export default Routine;
+export default RutinaComponent;
