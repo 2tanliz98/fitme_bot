@@ -53,15 +53,6 @@ const PlanesSeleccion: React.FC = () => {
             </SwiperSlide>
           ))}
 
-          {/* <SwiperSlide>
-            <Card img={planB} btnText="Seleccionar" planName="PLAN B" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <Card img={planC} btnText="Seleccionar" planName="PLAN C" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <Card img={planCC} btnText="Seleccionar" planName="PLAN C+" />
-          </SwiperSlide> */}
         </Swiper>
       </div>
     </section>

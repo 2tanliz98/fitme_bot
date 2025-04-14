@@ -5,14 +5,13 @@ import { faCopy } from "@fortawesome/free-regular-svg-icons";
 const CopiarPortapapeles: React.FC = () => {
   const [copiado, setCopiado] = useState(false);
 
-  // Función para copiar el texto al portapapeles
   const copiarAlPortapapeles = () => {
     const texto = "CLABE: 710969000014534870 Nombre: Ian Márquez Olvera"; 
     navigator.clipboard
       .writeText(texto)
       .then(() => {
-        setCopiado(true); // Cambiar el estado para indicar que se copió
-        setTimeout(() => setCopiado(false), 2000); // Después de 2 segundos, restablecer el estado
+        setCopiado(true); 
+        setTimeout(() => setCopiado(false), 2000); 
       })
       .catch((err) => {
         console.error("Error al copiar al portapapeles: ", err);

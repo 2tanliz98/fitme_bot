@@ -292,7 +292,6 @@ const handleStartRoutine = () => {
           </div>
         ))}
 
-        {/* Modal para mostrar detalles de la rutina seleccionada */}
         <Modal
           isOpen={modalIsOpen}
           onRequestClose={closeModal}
@@ -333,7 +332,6 @@ const handleStartRoutine = () => {
       </div>
       <Footer />
 
-      {/* Aquí pasamos la rutina seleccionada al componente Routine */}
     </section>
   );
 };
